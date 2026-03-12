@@ -1,0 +1,194 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String     @id @default(uuid())
+  name         String?
+  email        String     @unique
+  passwordHash String?
+  role         String     @default("CUSTOMER")
+  avatar       String?
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  orders       Order[]
+  wishlist     Wishlist[]
+  addresses    Address[]
+  reviews      Review[]
+  stockAlerts  StockAlert[]
+}
+
+model Product {
+  id           String      @id @default(uuid())
+  name         String
+  slug         String      @unique
+  description  String
+  price        Float
+  comparePrice Float?
+  category     String
+  subcategory  String?
+  brand        String?
+  tags         String
+  images       String
+  stock        Int         @default(0)
+  rating       Float       @default(0)
+  reviewCount  Int         @default(0)
+  isFeatured   Boolean     @default(false)
+  isNew        Boolean     @default(false)
+  isSale       Boolean     @default(false)
+  createdAt    DateTime    @default(now())
+
+  variants     Variant[]
+  reviews      Review[]
+  wishlist     Wishlist[]
+  stockAlerts  StockAlert[]
+}
+
+model Variant {
+  id        String   @id @default(uuid())
+  productId String
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  size      String?
+  colour    String?
+  colourHex String?
+  stock     Int      @default(0)
+  sku       String   @unique
+  stockAlerts StockAlert[]
+}
+
+model Order {
+  id              String      @id @default(uuid())
+  userId          String
+  user            User        @relation(fields: [userId], references: [id], onDelete: Restrict)
+  status          String      @default("PENDING")
+  subtotal        Float
+  discount        Float       @default(0)
+  shipping        Float       @default(0)
+  total           Float
+  promoCode       String?
+  shippingAddress String
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+
+  items           OrderItem[]
+
+  // Tracking Fields
+  trackingNumber   String?
+  carrierName      String?
+  estimatedDelivery DateTime?
+  currentStatus    TrackingStatus @default(ORDER_PLACED)
+  trackingEvents   TrackingEvent[]
+}
+
+model TrackingEvent {
+  id          String         @id @default(uuid())
+  orderId     String
+  order       Order          @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  status      TrackingStatus
+  title       String
+  description String
+  location    String?
+  timestamp   DateTime       @default(now())
+  isCompleted Boolean        @default(false)
+}
+
+enum TrackingStatus {
+  ORDER_PLACED
+  CONFIRMED
+  PROCESSING
+  PACKED
+  HANDED_TO_COURIER
+  IN_TRANSIT
+  OUT_FOR_DELIVERY
+  DELIVERED
+  FAILED_DELIVERY
+  RETURNED
+}
+
+model StockAlert {
+  id          String   @id @default(uuid())
+  userId      String?
+  user        User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  email       String
+  productId   String
+  product     Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  variantId   String
+  variant     Variant  @relation(fields: [variantId], references: [id], onDelete: Cascade)
+  size        String?
+  colour      String?
+  createdAt   DateTime @default(now())
+  isTriggered Boolean  @default(false)
+  triggeredAt DateTime?
+  isNotified  Boolean  @default(false)
+  notifiedAt  DateTime?
+
+  @@index([email, variantId])
+}
+
+model OrderItem {
+  id              String   @id @default(uuid())
+  orderId         String
+  order           Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId       String
+  variantId       String?
+  qty             Int
+  priceAtPurchase Float
+  productName     String
+  productImage    String?
+}
+
+model Review {
+  id           String   @id @default(uuid())
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  productId    String
+  product      Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  rating       Float
+  title        String?
+  body         String
+  createdAt    DateTime @default(now())
+  helpfulCount Int      @default(0)
+}
+
+model Address {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  fullName  String
+  phone     String
+  line1     String
+  line2     String?
+  city      String
+  state     String
+  pincode   String
+  country   String
+  isDefault Boolean  @default(false)
+}
+
+model PromoCode {
+  id            String    @id @default(uuid())
+  code          String    @unique
+  discountType  String
+  value         Float
+  minOrderValue Float     @default(0)
+  maxUses       Int?
+  usedCount     Int       @default(0)
+  expiresAt     DateTime?
+  isActive      Boolean   @default(true)
+}
+
+model Wishlist {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  productId String
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, productId])
+}

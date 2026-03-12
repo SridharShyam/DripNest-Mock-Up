@@ -1,0 +1,96 @@
+@import "tailwindcss";
+
+@theme {
+  --color-black: #0a0a0a;
+  --color-charcoal: #1a1a1a;
+  --color-violet: #7b62c4;
+  --color-lavender: #a98edb;
+  --color-mist: #faf9f7;
+  --color-cream: #ffffff;
+  --color-red: #d11212;
+  --color-gold: #c5a059;
+  --color-green: #2d8a56;
+
+  --font-syne: var(--font-syne);
+  --font-manrope: var(--font-manrope);
+}
+
+@layer base {
+  body {
+    @apply font-sans bg-mist text-black;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-serif);
+    font-weight: 700;
+  }
+}
+
+/* Animations */
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee 30s linear infinite;
+}
+
+@keyframes slide-up-fade {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-slide-up-fade {
+  animation: slide-up-fade 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.hide-scroll::-webkit-scrollbar {
+  display: none;
+}
+.hide-scroll {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.miniscroll::-webkit-scrollbar {
+  width: 4px;
+}
+.miniscroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.miniscroll::-webkit-scrollbar-thumb {
+  background: #eee;
+  border-radius: 10px;
+}
+
+::selection {
+  background-color: #7b62c4;
+  color: white;
+}
+
+.marquee__content {
+  flex-shrink: 0;
+  display: flex;
+  justify-content: space-around;
+  min-width: 100%;
+  gap: 2rem;
+  animation: scroll 20s linear infinite;
+}
+
+@keyframes scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(calc(-100% - 2rem));
+  }
+}
