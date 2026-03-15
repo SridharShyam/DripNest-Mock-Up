@@ -4,13 +4,14 @@ import { useState, useEffect } from 'react';
 import { signIn, useSession } from 'next-auth/react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
+import { Suspense } from 'react';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { useToast } from '@/hooks/useToast';
 import { motion } from 'framer-motion';
 import { LogIn, Mail, Lock, Chrome, ArrowRight } from 'lucide-react';
 
-export default function LoginPage() {
+function LoginContent() {
   const { data: session, status } = useSession();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -145,5 +146,17 @@ export default function LoginPage() {
         <div className="absolute top-40 right-[10%] w-16 h-16 border border-white/5 rounded-full" />
       </div>
     </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center font-serif text-3xl font-bold italic animate-pulse">
+        DripNest.
+      </div>
+    }>
+      <LoginContent />
+    </Suspense>
   );
 }

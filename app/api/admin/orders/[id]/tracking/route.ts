@@ -6,7 +6,7 @@ import { sendOrderUpdateEmail } from "@/lib/email";
 
 export async function POST(
   req: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await getServerSession(authOptions);
@@ -15,7 +15,7 @@ export async function POST(
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const { id } = params;
+    const { id } = await params;
     const { status, title, description, location, timestamp } = await req.json();
 
     const order = await db.order.findUnique({

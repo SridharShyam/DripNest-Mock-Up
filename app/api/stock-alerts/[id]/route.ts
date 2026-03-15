@@ -5,11 +5,11 @@ import { authOptions } from "@/lib/auth";
 
 export async function DELETE(
   req: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await getServerSession(authOptions);
-    const { id } = params;
+    const { id } = await params;
 
     // @ts-ignore
     const alert = await db.stockAlert.findUnique({

@@ -161,14 +161,14 @@ async function main() {
       carrierName: 'FedEx',
       currentStatus: TrackingStatus.DELIVERED,
       events: [
-        { status: TrackingStatus.ORDER_PLACED, title: 'Order Placed', description: 'We received your order.', timestamp: new Date(Date.now() - 86400000 * 4) },
-        { status: TrackingStatus.CONFIRMED, title: 'Order Confirmed', description: 'Your order has been confirmed.', timestamp: new Date(Date.now() - 86400000 * 3.5) },
-        { status: TrackingStatus.PROCESSING, title: 'Processing', description: 'Your order is being prepared.', timestamp: new Date(Date.now() - 86400000 * 3) },
-        { status: TrackingStatus.PACKED, title: 'Packed', description: 'Your order is packed and ready.', timestamp: new Date(Date.now() - 86400000 * 2.5) },
-        { status: TrackingStatus.HANDED_TO_COURIER, title: 'Handed to Courier', description: 'Tied with FedEx.', timestamp: new Date(Date.now() - 86400000 * 2) },
+        { status: TrackingStatus.ORDER_PLACED, title: 'Order Placed', description: 'We received your order.', location: undefined, timestamp: new Date(Date.now() - 86400000 * 4) },
+        { status: TrackingStatus.CONFIRMED, title: 'Order Confirmed', description: 'Your order has been confirmed.', location: undefined, timestamp: new Date(Date.now() - 86400000 * 3.5) },
+        { status: TrackingStatus.PROCESSING, title: 'Processing', description: 'Your order is being prepared.', location: undefined, timestamp: new Date(Date.now() - 86400000 * 3) },
+        { status: TrackingStatus.PACKED, title: 'Packed', description: 'Your order is packed and ready.', location: undefined, timestamp: new Date(Date.now() - 86400000 * 2.5) },
+        { status: TrackingStatus.HANDED_TO_COURIER, title: 'Handed to Courier', description: 'Tied with FedEx.', location: undefined, timestamp: new Date(Date.now() - 86400000 * 2) },
         { status: TrackingStatus.IN_TRANSIT, title: 'In Transit', description: 'On the way to destination.', location: 'Mumbai Sorting Hub', timestamp: new Date(Date.now() - 86400000 * 1.5) },
         { status: TrackingStatus.OUT_FOR_DELIVERY, title: 'Out for Delivery', description: 'A delivery executive is near you.', location: 'Bandra Center', timestamp: new Date(Date.now() - 86400000 * 0.5) },
-        { status: TrackingStatus.DELIVERED, title: 'Delivered', description: 'Package delivered to resident.', timestamp: new Date(Date.now() - 86400000 * 0.1) },
+        { status: TrackingStatus.DELIVERED, title: 'Delivered', description: 'Package delivered to resident.', location: undefined, timestamp: new Date(Date.now() - 86400000 * 0.1) },
       ]
     },
     {
@@ -178,11 +178,11 @@ async function main() {
       carrierName: 'Blue Dart',
       currentStatus: TrackingStatus.IN_TRANSIT,
       events: [
-        { status: TrackingStatus.ORDER_PLACED, title: 'Order Placed', description: 'We received your order.', timestamp: new Date(Date.now() - 86400000 * 1) },
-        { status: TrackingStatus.CONFIRMED, title: 'Order Confirmed', description: 'Your order has been confirmed.', timestamp: new Date(Date.now() - 86400000 * 0.8) },
-        { status: TrackingStatus.PROCESSING, title: 'Processing', description: 'Your order is being prepared.', timestamp: new Date(Date.now() - 86400000 * 0.5) },
-        { status: TrackingStatus.PACKED, title: 'Packed', description: 'Your order is packed and ready.', timestamp: new Date(Date.now() - 86400000 * 0.3) },
-        { status: TrackingStatus.HANDED_TO_COURIER, title: 'Handed to Courier', description: 'Collected by Blue Dart.', timestamp: new Date(Date.now() - 86400000 * 0.1) },
+        { status: TrackingStatus.ORDER_PLACED, title: 'Order Placed', description: 'We received your order.', location: undefined, timestamp: new Date(Date.now() - 86400000 * 1) },
+        { status: TrackingStatus.CONFIRMED, title: 'Order Confirmed', description: 'Your order has been confirmed.', location: undefined, timestamp: new Date(Date.now() - 86400000 * 0.8) },
+        { status: TrackingStatus.PROCESSING, title: 'Processing', description: 'Your order is being prepared.', location: undefined, timestamp: new Date(Date.now() - 86400000 * 0.5) },
+        { status: TrackingStatus.PACKED, title: 'Packed', description: 'Your order is packed and ready.', location: undefined, timestamp: new Date(Date.now() - 86400000 * 0.3) },
+        { status: TrackingStatus.HANDED_TO_COURIER, title: 'Handed to Courier', description: 'Collected by Blue Dart.', location: undefined, timestamp: new Date(Date.now() - 86400000 * 0.1) },
       ]
     }
   ];

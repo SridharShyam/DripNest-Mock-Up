@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { Search, AlertCircle, ShoppingBag } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
@@ -17,7 +17,7 @@ const fetcher = (url: string, body: any) => fetch(url, {
   return res.json();
 });
 
-export default function TrackingPage() {
+function TrackContent() {
   const searchParams = useSearchParams();
   const [orderId, setOrderId] = useState(searchParams.get('orderId') || '');
   const [email, setEmail] = useState('');
@@ -134,5 +134,17 @@ export default function TrackingPage() {
         )}
       </div>
     </div>
+  );
+}
+
+export default function TrackingPage() {
+  return (
+    <Suspense fallback={
+       <div className="min-h-screen flex items-center justify-center font-serif text-3xl font-bold italic animate-pulse">
+        DripNest.
+       </div>
+    }>
+      <TrackContent />
+    </Suspense>
   );
 }

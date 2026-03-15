@@ -2,7 +2,7 @@
 
 import { useSession, signOut } from 'next-auth/react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { Button } from '@/components/ui/Button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/Tabs';
 import { Package, Heart, User, LogOut, ChevronRight, ShoppingBag, MapPin, Settings, Bell, Trash2 } from 'lucide-react';
@@ -10,7 +10,7 @@ import { formatPrice } from '@/lib/utils';
 import Link from 'next/link';
 import { TrackingModal } from '@/components/tracking/TrackingModal';
 
-export default function AccountPage() {
+function AccountContent() {
   const { data: session, status } = useSession();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -321,5 +321,15 @@ export default function AccountPage() {
         orderId={trackingOrderId || ''} 
       />
     </div>
+  );
+}
+
+export default function AccountPage() {
+  return (
+    <Suspense fallback={
+      <div className="h-screen flex items-center justify-center font-serif text-2xl font-bold">DripNest.</div>
+    }>
+      <AccountContent />
+    </Suspense>
   );
 }
