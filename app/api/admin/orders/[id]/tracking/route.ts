@@ -5,7 +5,7 @@ import { authOptions } from "@/lib/auth";
 import { sendOrderUpdateEmail } from "@/lib/email";
 
 export async function POST(
-  req: NextRequest,
+  request: NextRequest,
   context: { params: Promise<{ id: string }> }
 ) {
   try {
@@ -16,7 +16,7 @@ export async function POST(
     }
 
     const { id } = await context.params;
-    const { status, title, description, location, timestamp } = await req.json();
+    const { status, title, description, location, timestamp } = await request.json();
 
     const order = await db.order.findUnique({
       where: { id },

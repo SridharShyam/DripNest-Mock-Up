@@ -4,7 +4,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 
 export async function PUT(
-  req: NextRequest,
+  request: NextRequest,
   context: { params: Promise<{ id: string }> }
 ) {
   try {
@@ -15,7 +15,7 @@ export async function PUT(
     }
 
     const { id } = await context.params;
-    const { carrierName, trackingNumber, estimatedDelivery } = await req.json();
+    const { carrierName, trackingNumber, estimatedDelivery } = await request.json();
 
     // @ts-ignore
     const order = await db.order.update({

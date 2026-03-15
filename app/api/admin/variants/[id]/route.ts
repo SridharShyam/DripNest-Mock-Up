@@ -4,7 +4,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 
 export async function PATCH(
-  req: NextRequest,
+  request: NextRequest,
   context: { params: Promise<{ id: string }> }
 ) {
   try {
@@ -15,7 +15,7 @@ export async function PATCH(
     }
 
     const { id } = await context.params;
-    const { stock } = await req.json();
+    const { stock } = await request.json();
 
     if (stock === undefined) {
       return NextResponse.json({ error: "Stock value is required" }, { status: 400 });
@@ -47,7 +47,7 @@ export async function PATCH(
     // If stock went from 0 to >0, trigger alerts
     let notifiedCount = 0;
     if (oldVariant.stock === 0 && variant.stock > 0) {
-      // We can call the internal trigger logic or just do it here
+      const { sendRestockEmail } = await import("@/lib/email");
       const alerts = await db.stockAlert.findMany({
         where: {
           variantId: id,
@@ -60,7 +60,6 @@ export async function PATCH(
       });
 
       if (alerts.length > 0) {
-        const { sendRestockEmail } = await import("@/lib/email");
         for (const alert of alerts) {
           await sendRestockEmail(alert.email, alert.product, alert.variant);
           await db.stockAlert.update({
